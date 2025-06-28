@@ -26,11 +26,5 @@ A clean, responsive front-end application to create professional resumes and cov
 
 ---
 
-## 🚀 Getting Started
 
-To run the project locally:
-
-```bash
-git clone https://github.com/your-username/resume-generator.git
-cd resume-generator
 
