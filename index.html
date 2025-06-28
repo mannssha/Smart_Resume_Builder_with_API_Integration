@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Resume Generator with AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #eef2f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #004d61;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .form-section, .preview-section {
+      flex: 1;
+      min-width: 340px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+    input, textarea {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #f9f9f9;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 15px;
+      background: #00796b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #005f56;
+    }
+    .preview-section {
+      padding: 0;
+    }
+    #resumePreview {
+      background: white;
+      color: #111;
+      max-width: 800px;
+      padding: 40px;
+      margin: 0 auto;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+    .header {
+      background: #004d61;
+      color: white;
+      padding: 25px;
+      text-align: center;
+      border-radius: 10px 10px 0 0;
+    }
+    .section {
+      padding: 15px 25px;
+      border-bottom: 1px solid #eee;
+    }
+    .section:last-child { border: none; }
+    .section h3 {
+      color: #00796b;
+      border-bottom: 2px solid #00796b;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    @media print {
+      body { background: white; }
+      .form-section, button { display: none; }
+      .preview-section { box-shadow: none; }
+      #resumePreview {
+        border: none;
+        padding: 30px;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>🧠 AI-Powered Resume Generator</h1>
+
+<div class="container">
+  <div class="form-section">
+    <form id="resumeForm">
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="text" id="email" placeholder="Email" required />
+      <input type="text" id="phone" placeholder="Phone Number" required />
+      <input type="text" id="linkedin" placeholder="LinkedIn URL" />
+      <input type="text" id="github" placeholder="GitHub URL" />
+      <textarea id="education" placeholder="Education Details" rows="3" required></textarea>
+      <textarea id="experience" placeholder="Work Experience" rows="3" required></textarea>
+      <textarea id="skills" placeholder="Skills (comma separated)" rows="2" required></textarea>
+      <textarea id="summary" placeholder="Professional Summary" rows="3"></textarea>
+      <button type="button" onclick="generateSummary()">🤖 Auto-Generate Summary</button>
+      <textarea id="projects" placeholder="Projects (with links or details)" rows="3"></textarea>
+      <textarea id="certifications" placeholder="Certifications or Trainings" rows="2"></textarea>
+      <button type="submit">🎯 Generate Resume</button>
+    </form>
+    <button onclick="downloadPDF()">📄 Download PDF</button>
+  </div>
+
+  <div class="preview-section">
+    <div id="resumePreview">
+      <div class="header">
+        <h2>Your Name</h2>
+        <p>Email | Phone</p>
+      </div>
+      <div class="section"><h3>Summary</h3><p>...</p></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+  const form = document.getElementById('resumeForm');
+  const preview = document.getElementById('resumePreview');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const linkedin = document.getElementById('linkedin').value;
+    const github = document.getElementById('github').value;
+    const summary = document.getElementById('summary').value;
+    const education = document.getElementById('education').value;
+    const experience = document.getElementById('experience').value;
+    const skills = document.getElementById('skills').value;
+    const projects = document.getElementById('projects').value;
+    const certifications = document.getElementById('certifications').value;
+
+    preview.innerHTML = `
+      <div class="header">
+        <h2>${name}</h2>
+        <p>${email} | ${phone}</p>
+        ${linkedin ? `<p>LinkedIn: ${linkedin}</p>` : ""}
+        ${github ? `<p>GitHub: ${github}</p>` : ""}
+      </div>
+
+      ${summary ? `<div class="section"><h3>Professional Summary</h3><p>${summary}</p></div>` : ""}
+      <div class="section"><h3>Education</h3><p>${education}</p></div>
+      <div class="section"><h3>Experience</h3><p>${experience}</p></div>
+      ${projects ? `<div class="section"><h3>Projects</h3><p>${projects}</p></div>` : ""}
+      <div class="section"><h3>Skills</h3><p>${skills}</p></div>
+      ${certifications ? `<div class="section"><h3>Certifications</h3><p>${certifications}</p></div>` : ""}
+    `;
+  });
+
+  function downloadPDF() {
+    const element = document.getElementById('resumePreview');
+    html2pdf().from(element).save('AI_Resume.pdf');
+  }
+
+  async function generateSummary() {
+    const education = document.getElementById('education').value;
+    const experience = document.getElementById('experience').value;
+    const skills = document.getElementById('skills').value;
+    const summaryBox = document.getElementById('summary');
+
+    const prompt = `Create a professional summary for a resume. Education: ${education}. Experience: ${experience}. Skills: ${skills}.`;
+
+    const apiKey = "";  // ← Replace with your OpenAI API key
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.7,
+      })
+    });
+
+    const data = await response.json();
+    const summary = data.choices?.[0]?.message?.content || "Motivated and versatile individual currently studying at VIT Chennai, with internship experience at CADS. Skilled in programming languages, graphic design, and full-stack development, including both web and app development. Actively building a strong professional presence through platforms like GitHub and LinkedIn. Demonstrates a passion for continuous learning and applying creative solutions in tech-driven environments.";
+    summaryBox.value = summary.trim();
+  }
+</script>
+
+</body>
+</html>
