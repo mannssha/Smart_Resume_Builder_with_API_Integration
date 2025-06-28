@@ -24,7 +24,9 @@ A clean, responsive front-end application to create professional resumes and cov
 - JavaScript
 - [html2pdf.js](https://github.com/eKoopmans/html2pdf) – for PDF export
 
----
+git init
+git remote add origin https://github.com/mannssha/resume_maker.git
+
 
 
 
