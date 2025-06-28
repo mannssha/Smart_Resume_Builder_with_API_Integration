@@ -4,10 +4,6 @@ A simple and elegant front-end tool to create professional resumes. Enter your d
 
 A clean, responsive front-end application to create professional resumes and cover letters. Users can input their details in a form and generate a beautifully styled PDF resume with a single click. No backend or API is required — everything runs directly in the browser.
 
-## 🔍 Demo
-
-> 👉 [Live Preview Link (Optional if hosted)](https://your-live-site-link.com)
-
 ---
 
 ## ✨ Features
